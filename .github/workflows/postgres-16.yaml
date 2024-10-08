@@ -1,0 +1,26 @@
+name: Build & Push Postgres 16 OCI Image to OCI Image Registry
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "16/Dockerfile"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "16/Dockerfile"
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+  build:
+    uses: ./.github/workflows/build.yaml
+    with:
+        dockerfile: "16/Dockerfile"
+        images: |
+            ghcr.io/${{ github.repository_owner }}/postgres
+    secrets:
+      ghcr-username: ${{ github.repository_owner }}
+      ghcr-access-token: ${{ secrets.GITHUB_TOKEN }}
