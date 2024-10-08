@@ -13,8 +13,6 @@ on:
       - "16/Dockerfile"
 
 jobs:
-  version:
-    runs-on: ubuntu-latest
   build:
     uses: ./.github/workflows/build.yaml
     with:
