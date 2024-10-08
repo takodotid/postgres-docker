@@ -1,0 +1,13 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": ["github>kakushindev/renovate-config"],
+    "packageRules": [
+        {
+            "matchDatasources": ["docker"],
+            "matchPackageNames": ["docker.io/bitnami/postgresql", "docker.io/timescale/timescaledb"],
+            "versioning": "semver",
+            "automerge": false,
+            "matchUpdateTypes": ["minor", "patch"]
+        }
+    ]
+}
