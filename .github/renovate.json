@@ -6,8 +6,10 @@
             "matchDatasources": ["docker"],
             "matchPackageNames": ["docker.io/bitnami/postgresql", "docker.io/timescale/timescaledb"],
             "versioning": "semver",
-            "automerge": false,
-            "matchUpdateTypes": ["minor", "patch"]
+            "automerge": false
         }
-    ]
+    ],
+    "major": { "enabled": false },
+    "minor": { "enabled": true  },
+    "patch": { "enabled": true  }
 }
