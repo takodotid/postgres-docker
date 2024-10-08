@@ -6,7 +6,7 @@ RUN apk update && apk add --no-cache git gcc musl-dev \
     && go install github.com/timescale/timescaledb-parallel-copy/cmd/timescaledb-parallel-copy@latest
 
 # TimescaleDB extension
-FROM docker.io/timescale/timescaledb:2.16.1-pg16-bitnami AS timescaledb
+FROM docker.io/timescale/timescaledb:2.17.0-pg16-bitnami AS timescaledb
 
 # Copy the last 3 versions of the extension
 RUN cd /opt/bitnami/postgresql/lib \
