@@ -31,6 +31,5 @@ COPY --from=timescaledb /docker-entrypoint-initdb.d/*.sh /docker-entrypoint-init
 
 # Entrypoint
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-
 ENTRYPOINT [ "docker-entrypoint.sh" ]
 CMD [ "/opt/bitnami/scripts/postgresql/run.sh" ]
