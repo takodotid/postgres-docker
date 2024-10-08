@@ -35,13 +35,9 @@ jobs:
         uses: docker/setup-buildx-action@885d1462b80bc1c1c7f0b00334ad271f09369c55 # v2.10.0
 
       - name: Get version in Dockerfile
-        id: version
-        run: |
-          echo "VERSION=$(cat Dockerfile | sed -n 's/.*postgresql:\([0-9.]*\).*/\1/p')" >> $GITHUB_OUTPUT
-
-      - name: Seperate semver version
         id: semver
         run: |
+          export VERSION=$(cat ${{ inputs.dockerfile }} | sed -n 's/.*postgresql:\([0-9.]*\).*/\1/p')
           echo "MAJOR=$(echo $VERSION | cut -d. -f1)" >> $GITHUB_OUTPUT
           echo "MINOR=$(echo $VERSION | cut -d. -f2)" >> $GITHUB_OUTPUT
           echo "PATCH=$(echo $VERSION | cut -d. -f3)" >> $GITHUB_OUTPUT

@@ -24,11 +24,9 @@ COPY --from=timescaledb-tools /go/bin/* /usr/local/bin/
 
 # TimescaleDB extension (We will install last 3 versions)
 COPY --from=timescaledb /tmp/*.so /opt/bitnami/postgresql/lib/
-
-# TimescaleDB upgrade and downgrade scripts
 COPY --from=timescaledb /tmp/*.sql /opt/bitnami/postgresql/share/extension/
 
-# TimescaleDB initialization scripts
+# TimescaleDB Docker initialization scripts
 COPY --from=timescaledb /docker-entrypoint-initdb.d/*.sh /docker-entrypoint-initdb.d/
 
 # Entrypoint
