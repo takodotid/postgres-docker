@@ -30,6 +30,7 @@ COPY --from=timescaledb /tmp/share/* /opt/bitnami/postgresql/share/extension/
 
 # TimescaleDB Docker initialization scripts
 COPY --from=timescaledb /docker-entrypoint-initdb.d/*.sh /docker-entrypoint-initdb.d/
+COPY ./initdb/* /docker-entrypoint-initdb.d/
 
 # Entrypoint
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
