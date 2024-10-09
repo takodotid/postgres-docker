@@ -18,13 +18,16 @@ if [ $POSTGRES_USER != "postgres" ]; then
         exit 1
     fi
 
-    # Find "timescaledb.telemetry_level" in the postgresql.conf file
-    if grep -q "timescaledb.telemetry_level" ${POSTGRESQL_CONF_DIR}/postgresql.conf; then
+    # Find "timescaledb.telemetry_level" in the postgresql.conf file, if not found, then alter the owner of the databases
+    if ! grep -q "timescaledb.telemetry_level" ${POSTGRESQL_CONF_DIR}/postgresql.conf; then
         # Change the owner of the initial databases to the POSTGRES_USER
-        psql -U postgres postgres -f "ALTER DATABASE postgres OWNER TO $POSTGRES_USER;"
-        psql -U postgres template1 -f "ALTER DATABASE template1 OWNER TO $POSTGRES_USER;"
+        psql -U postgres postgres -f "ALTER DATABASE postgres OWNER TO $POSTGRES_USER"
+        psql -U postgres template1 -f "ALTER DATABASE template1 OWNER TO $POSTGRES_USER"
 
         # Change the owner of the POSTGRES_DB to the POSTGRES_USER
-        psql -U postgres $POSTGRES_DB -f "ALTER DATABASE $POSTGRES_DB OWNER TO $POSTGRES_USER;"
+        psql -U postgres $POSTGRES_DB -f "ALTER DATABASE $POSTGRES_DB OWNER TO $POSTGRES_USER"
     fi
+
+    # Mark to revert the changes
+    touch /tmp/alter_owner_temp_revert
 fi
