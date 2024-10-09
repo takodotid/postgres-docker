@@ -7,12 +7,14 @@ on:
     paths:
       - "17/Dockerfile"
       - "docker-entrypoint.sh"
+      - "initdb/*"
   pull_request:
     branches:
       - main
     paths:
       - "17/Dockerfile"
       - "docker-entrypoint.sh"
+      - "initdb/*"
 
 jobs:
   docker:
