@@ -6,11 +6,13 @@ on:
       - main
     paths:
       - "17/Dockerfile"
+      - "docker-entrypoint.sh"
   pull_request:
     branches:
       - main
     paths:
       - "17/Dockerfile"
+      - "docker-entrypoint.sh"
 
 jobs:
   docker:

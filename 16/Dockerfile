@@ -8,7 +8,7 @@ RUN apk update && apk add --no-cache git gcc musl-dev \
 # TimescaleDB extension
 FROM docker.io/timescale/timescaledb:2.17.0-pg16-bitnami AS timescaledb
 
-# Select and copy the last 3 versions of the extension 
+# Select and copy the last 3 versions of the extension
 RUN cd /opt/bitnami/postgresql/lib \
     && cp timescaledb.so /tmp \
     && cp -r $(ls . | grep timescaledb- | sort | tail -n 3) /tmp \
