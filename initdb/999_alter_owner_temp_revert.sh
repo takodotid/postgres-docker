@@ -19,7 +19,7 @@ if [ $POSTGRES_USER != "postgres" ]; then
     fi
 
     # Find "timescaledb.telemetry_level" in the postgresql.conf file
-    if grep -q "timescaledb.telemetry_level" /bitnami/postgresql/conf/postgresql.conf; then
+    if grep -q "timescaledb.telemetry_level" ${POSTGRESQL_CONF_DIR}/postgresql.conf; then
         # Change the owner of the initial databases to the POSTGRES_USER
         psql -U postgres postgres -f "ALTER DATABASE postgres OWNER TO postgres;"
         psql -U postgres template1 -f "ALTER DATABASE template1 OWNER TO postgres;"
