@@ -11,12 +11,12 @@ FROM docker.io/timescale/timescaledb:2.17.0-pg16-bitnami AS timescaledb
 # Select and copy the last 3 versions of the extension
 RUN mkdir -p /tmp/lib /tmp/share \
     && cd /opt/bitnami/postgresql/lib \
-    && cp timescaledb.so /tmp/lib \ # Copy extensions
+    && cp timescaledb.so /tmp/lib \
     && cp -r $(ls . | grep timescaledb- | sort | tail -n 3) /tmp/lib \
     && cp -r $(ls . | grep timescaledb-tsl- | sort | tail -n 3) /tmp/lib \
-    && cd /opt/bitnami/postgresql/share/extension \ # Copy sql migration files
+    && cd /opt/bitnami/postgresql/share/extension \
     && cp -r $(ls . | grep timescaledb | grep .sql) /tmp/share \
-    && cp timescaledb.control /tmp/share # Copy control file (?)
+    && cp timescaledb.control /tmp/share
 
 # PostgreSQL Server
 FROM docker.io/bitnami/postgresql:16.4.0 AS postgresql
