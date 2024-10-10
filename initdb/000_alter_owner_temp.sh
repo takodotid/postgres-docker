@@ -8,6 +8,10 @@ if [ -z "${POSTGRESQL_POSTGRES_PASSWORD:-}" ]; then
     POSTGRESQL_POSTGRES_PASSWORD=${POSTGRES_POSTGRES_PASSWORD:-}
 fi
 
+if [ -z "${POSTGRES_USER:-}" ]; then
+    POSTGRES_USER="postgres"
+fi
+
 export PGPASSWORD="$POSTGRESQL_POSTGRES_PASSWORD"
 
 if [ $POSTGRES_USER != "postgres" ]; then
