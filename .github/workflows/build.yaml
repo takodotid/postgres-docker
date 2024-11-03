@@ -51,6 +51,8 @@ jobs:
             ${{ steps.semver.outputs.MAJOR }}
             ${{ steps.semver.outputs.MAJOR }}.${{ steps.semver.outputs.MINOR }}
             ${{ steps.semver.outputs.MAJOR }}.${{ steps.semver.outputs.MINOR }}.${{ steps.semver.outputs.PATCH }}
+            type=sha,prefix=,suffix=,format=short
+            type=sha,prefix=,suffix=,format=long
 
       - name: Login to GitHub Container Registry
         if: ${{ github.event_name != 'pull_request' }}
