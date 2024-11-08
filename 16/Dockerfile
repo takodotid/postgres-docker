@@ -6,7 +6,7 @@ RUN apk update && apk add --no-cache git gcc musl-dev \
     && go install github.com/timescale/timescaledb-parallel-copy/cmd/timescaledb-parallel-copy@latest
 
 # TimescaleDB extension
-FROM docker.io/timescale/timescaledb:2.17.2-pg16-bitnami AS timescaledb
+FROM docker.io/timescale/timescaledb:2.17.2-pg17-oss AS timescaledb
 
 # Select and copy the last 3 versions of the extension
 RUN mkdir -p /tmp/lib /tmp/share \
