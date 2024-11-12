@@ -36,4 +36,3 @@ COPY ./initdb/* /docker-entrypoint-initdb.d/
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 ENTRYPOINT [ "docker-entrypoint.sh" ]
 CMD [ "/opt/bitnami/scripts/postgresql/run.sh" ]
-#
