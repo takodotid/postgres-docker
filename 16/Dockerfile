@@ -1,28 +1,25 @@
-# TimescaleDB tools
-FROM docker.io/library/golang:alpine AS timescaledb-tools
-
-RUN apk update && apk add --no-cache git gcc musl-dev \
-    && go install github.com/timescale/timescaledb-tune/cmd/timescaledb-tune@latest \
-    && go install github.com/timescale/timescaledb-parallel-copy/cmd/timescaledb-parallel-copy@latest
-
-# TimescaleDB extension
+# TimescaleDB
 FROM docker.io/timescale/timescaledb:2.17.2-pg16-bitnami AS timescaledb
 
 # Select and copy the last 3 versions of the extension
-RUN mkdir -p /tmp/lib /tmp/share \
+RUN mkdir -p /tmp/lib /tmp/share /tmp/bin \
     && cd /opt/bitnami/postgresql/lib \
     && cp timescaledb.so /tmp/lib \
-    && cp -r $(ls . | grep timescaledb- | sort | tail -n 3) /tmp/lib \
+    && cp -r $(ls . | grep timescaledb- | grep -v tsl | sort | tail -n 3) /tmp/lib \
     && cp -r $(ls . | grep timescaledb-tsl- | sort | tail -n 3) /tmp/lib \
     && cd /opt/bitnami/postgresql/share/extension \
     && cp -r $(ls . | grep timescaledb | grep .sql) /tmp/share \
-    && cp timescaledb.control /tmp/share
+    && cp timescaledb.control /tmp/share \
+    && cd /usr/local/bin \
+    && cp -r $(ls . | grep timescaledb-) /tmp/bin
+
+RUN echo -e "[INFO] TimescaleDB lib files to be installed: \n$(ls /tmp/lib)"
 
 # PostgreSQL Server
 FROM docker.io/bitnami/postgresql:16.4.0 AS postgresql
 
 # TimescaleDB tools
-COPY --from=timescaledb-tools /go/bin/* /usr/local/bin/
+COPY --from=timescaledb /tmp/bin/* /usr/local/bin/
 
 # TimescaleDB extension (We will install last 3 versions)
 COPY --from=timescaledb /tmp/lib/* /opt/bitnami/postgresql/lib/

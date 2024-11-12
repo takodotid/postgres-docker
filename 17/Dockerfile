@@ -1,4 +1,4 @@
-# TimescaleDB extension
+# TimescaleDB
 FROM docker.io/timescale/timescaledb:2.17.2-pg17-bitnami AS timescaledb
 
 # Select and copy the last 3 versions of the extension
