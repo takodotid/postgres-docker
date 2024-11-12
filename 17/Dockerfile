@@ -12,7 +12,7 @@ FROM docker.io/timescale/timescaledb:2.17.2-pg17-bitnami AS timescaledb
 RUN mkdir -p /tmp/lib /tmp/share \
     && cd /opt/bitnami/postgresql/lib \
     && cp timescaledb.so /tmp/lib \
-    && cp -r $(ls . | grep timescaledb- | sort | tail -n 3) /tmp/lib \
+    && cp -r $(ls . | grep timescaledb- | grep -v tsl | sort | tail -n 3) /tmp/lib \
     && cp -r $(ls . | grep timescaledb-tsl- | sort | tail -n 3) /tmp/lib \
     && cd /opt/bitnami/postgresql/share/extension \
     && cp -r $(ls . | grep timescaledb | grep .sql) /tmp/share \
