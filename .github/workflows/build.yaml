@@ -34,10 +34,18 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v3.7.1
 
-      - name: Get version in Dockerfile
-        id: semver
+      - name: Get Postgres version in Dockerfile
+        id: postgres
         run: |
           export VERSION=$(cat ${{ inputs.dockerfile }} | sed -n 's/.*postgresql:\([0-9.]*\).*/\1/p')
+          echo "MAJOR=$(echo $VERSION | cut -d. -f1)" >> $GITHUB_OUTPUT
+          echo "MINOR=$(echo $VERSION | cut -d. -f2)" >> $GITHUB_OUTPUT
+          echo "PATCH=$(echo $VERSION | cut -d. -f3)" >> $GITHUB_OUTPUT
+
+      - name: Get TimescaleDB version in Dockerfile
+        id: timescaledb
+        run: |
+          export VERSION=$(cat ${{ inputs.dockerfile }} | sed -n 's/.*timescale\/timescaledb:\([0-9.]*\).*/\1/p')
           echo "MAJOR=$(echo $VERSION | cut -d. -f1)" >> $GITHUB_OUTPUT
           echo "MINOR=$(echo $VERSION | cut -d. -f2)" >> $GITHUB_OUTPUT
           echo "PATCH=$(echo $VERSION | cut -d. -f3)" >> $GITHUB_OUTPUT
@@ -48,9 +56,17 @@ jobs:
         with:
           images: ${{ inputs.images }}
           tags: |
-            ${{ steps.semver.outputs.MAJOR }}
-            ${{ steps.semver.outputs.MAJOR }}.${{ steps.semver.outputs.MINOR }}
-            ${{ steps.semver.outputs.MAJOR }}.${{ steps.semver.outputs.MINOR }}.${{ steps.semver.outputs.PATCH }}
+            ${{ steps.postgres.outputs.MAJOR }}
+            ${{ steps.postgres.outputs.MAJOR }}.${{ steps.postgres.outputs.MINOR }}
+            ${{ steps.postgres.outputs.MAJOR }}.${{ steps.postgres.outputs.MINOR }}.${{ steps.postgres.outputs.PATCH }}
+
+            ${{ steps.timescaledb.outputs.MAJOR }}
+            ${{ steps.timescaledb.outputs.MAJOR }}.${{ steps.timescaledb.outputs.MINOR }}
+            ${{ steps.timescaledb.outputs.MAJOR }}.${{ steps.timescaledb.outputs.MINOR }}.${{ steps.timescaledb.outputs.PATCH }}
+
+            ${{ steps.postgres.outputs.MAJOR }}-${{ steps.timescaledb.outputs.MAJOR }}
+            ${{ steps.postgres.outputs.MAJOR }}.${{ steps.postgres.outputs.MINOR }}-${{ steps.timescaledb.outputs.MAJOR }}.${{ steps.timescaledb.outputs.MINOR }}
+            ${{ steps.postgres.outputs.MAJOR }}.${{ steps.postgres.outputs.MINOR }}.${{ steps.postgres.outputs.PATCH }}-${{ steps.timescaledb.outputs.MAJOR }}.${{ steps.timescaledb.outputs.MINOR }}.${{ steps.timescaledb.outputs.PATCH }}
             type=sha,prefix=,suffix=,format=short
             type=sha,prefix=,suffix=,format=long
 
