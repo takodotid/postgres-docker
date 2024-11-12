@@ -18,6 +18,8 @@ RUN mkdir -p /tmp/lib /tmp/share \
     && cp -r $(ls . | grep timescaledb | grep .sql) /tmp/share \
     && cp timescaledb.control /tmp/share
 
+RUN echo -e "[INFO] TimescaleDB lib files to be installed: \n$(ls /tmp/lib)"
+
 # PostgreSQL Server
 FROM docker.io/bitnami/postgresql:17.0.0 AS postgresql
 
