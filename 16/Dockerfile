@@ -16,7 +16,7 @@ RUN mkdir -p /tmp/lib /tmp/share /tmp/bin \
 RUN echo -e "[INFO] TimescaleDB lib files to be installed: \n$(ls /tmp/lib)"
 
 # PostgreSQL Server
-FROM docker.io/bitnami/postgresql:16.4.0 AS postgresql
+FROM docker.io/bitnami/postgresql:16.5.0 AS postgresql
 
 # TimescaleDB tools
 COPY --from=timescaledb /tmp/bin/* /usr/local/bin/
