@@ -1,5 +1,5 @@
 # TimescaleDB
-FROM docker.io/timescale/timescaledb:2.17.2-pg17-bitnami AS timescaledb
+FROM docker.io/timescale/timescaledb:2.17.2-pg17-oss AS timescaledb
 
 # Select and copy the last 3 versions of the extension
 RUN mkdir -p /tmp/lib /tmp/share /tmp/bin \
@@ -16,7 +16,7 @@ RUN mkdir -p /tmp/lib /tmp/share /tmp/bin \
 RUN echo -e "[INFO] TimescaleDB lib files to be installed: \n$(ls /tmp/lib)"
 
 # PostgreSQL Server
-FROM docker.io/bitnami/postgresql:17.1.0 AS postgresql
+FROM docker.io/bitnami/postgresql:17.2.0 AS postgresql
 
 # TimescaleDB tools
 COPY --from=timescaledb /tmp/bin/* /usr/local/bin/
