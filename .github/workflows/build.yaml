@@ -51,7 +51,7 @@ jobs:
           echo "PATCH=$(echo $VERSION | cut -d. -f3)" >> $GITHUB_OUTPUT
 
       - name: Generate Docker image metadata
-        uses: docker/metadata-action@v5.5.1
+        uses: docker/metadata-action@v5.6.1
         id: meta
         with:
           images: ${{ inputs.images }}
@@ -76,7 +76,7 @@ jobs:
 
       - name: Build and push the Docker image from the specified Dockerfile
         id: docker_build
-        uses: docker/build-push-action@v6.9.0
+        uses: docker/build-push-action@v6.10.0
         with:
           context: .
           file: ./${{ inputs.dockerfile }}
