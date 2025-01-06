@@ -63,8 +63,8 @@ jobs:
             ${{ steps.postgres.outputs.MAJOR }}-${{ steps.timescaledb.outputs.MAJOR }}
             ${{ steps.postgres.outputs.MAJOR }}.${{ steps.postgres.outputs.MINOR }}-${{ steps.timescaledb.outputs.MAJOR }}.${{ steps.timescaledb.outputs.MINOR }}
             ${{ steps.postgres.outputs.MAJOR }}.${{ steps.postgres.outputs.MINOR }}.${{ steps.postgres.outputs.PATCH }}-${{ steps.timescaledb.outputs.MAJOR }}.${{ steps.timescaledb.outputs.MINOR }}.${{ steps.timescaledb.outputs.PATCH }}
-            type=sha,prefix=,suffix=,format=short
-            type=sha,prefix=,suffix=,format=long
+            type=sha,prefix=${{ steps.postgres.outputs.MAJOR }},suffix=,format=short
+            type=sha,prefix=${{ steps.postgres.outputs.MAJOR }},suffix=,format=long
 
       - name: Login to GitHub Container Registry
         if: ${{ github.event_name != 'pull_request' }}
