@@ -14,9 +14,28 @@ RUN mkdir -p /tmp/lib /tmp/share /tmp/bin \
     && cp -r $(ls . | grep timescaledb-) /tmp/bin
 
 RUN echo -e "[INFO] TimescaleDB lib files to be installed: \n$(ls /tmp/lib)"
+RUN echo -e "[INFO] TimescaleDB share files to be installed: \n$(ls /tmp/share)"
+
+# PostgreSQL Server (base image)
+FROM docker.io/bitnami/postgresql:16.6.0 AS postgresql
+
+# pg_cron
+FROM postgresql AS pg_cron
+
+# Switch to root
+USER root
+
+# Select and copy the pg_cron extension files
+RUN install_packages --no-install-recommends git gcc make llvm clang \
+    && git clone https://github.com/citusdata/pg_cron.git \
+    && cd pg_cron \
+    && make install
+
+RUN echo -e "[INFO] pg_cron lib files to be installed: \n$(ls /opt/bitnami/postgresql/lib | grep pg_cron)"
+RUN echo -e "[INFO] pg_cron share files to be installed: \n$(ls /opt/bitnami/postgresql/share/extension | grep pg_cron)"
 
 # PostgreSQL Server
-FROM docker.io/bitnami/postgresql:16.6.0 AS postgresql
+FROM postgresql AS final
 
 # TimescaleDB tools
 COPY --from=timescaledb /tmp/bin/* /usr/local/bin/
@@ -24,6 +43,10 @@ COPY --from=timescaledb /tmp/bin/* /usr/local/bin/
 # TimescaleDB extension (We will install last 3 versions)
 COPY --from=timescaledb /tmp/lib/* /opt/bitnami/postgresql/lib/
 COPY --from=timescaledb /tmp/share/* /opt/bitnami/postgresql/share/extension/
+
+# pg_cron extension
+COPY --from=pg_cron /opt/bitnami/postgresql/lib/pg_cron* /opt/bitnami/postgresql/lib/
+COPY --from=pg_cron /opt/bitnami/postgresql/share/extension/pg_cron* /opt/bitnami/postgresql/share/extension/
 
 # TimescaleDB Docker initialization scripts
 COPY --from=timescaledb /docker-entrypoint-initdb.d/*.sh /docker-entrypoint-initdb.d/
