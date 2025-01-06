@@ -34,7 +34,7 @@ RUN install_packages --no-install-recommends git gcc make llvm clang \
 RUN echo -e "[INFO] pg_cron lib files to be installed: \n$(ls /opt/bitnami/postgresql/lib | grep pg_cron)"
 RUN echo -e "[INFO] pg_cron share files to be installed: \n$(ls /opt/bitnami/postgresql/share/extension | grep pg_cron)"
 
-# PostgreSQL Server
+# PostgreSQL Server (final image)
 FROM postgresql AS final
 
 # TimescaleDB tools
