@@ -1,7 +1,7 @@
 # TimescaleDB
 FROM docker.io/timescale/timescaledb:2.17.2-pg17-bitnami AS timescaledb
 
-# Select and copy the last 3 versions of the extension
+# Select and copy the last 3 versions of timescaledb extension
 RUN mkdir -p /tmp/lib /tmp/share /tmp/bin \
     && cd /opt/bitnami/postgresql/lib \
     && cp timescaledb.so /tmp/lib \
